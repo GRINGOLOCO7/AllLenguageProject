@@ -49,8 +49,16 @@ pip install PyAudio-0.2.11-cp310-cp310-win_amd64.whl
 6. create GUI, web site, app
 <br>
 
-## Code explenation
+## Content explenation
 Translator.py: code that translate user input text from lenguage 1 to lenguage 2 and viceversa
+
+Speech-to-text.py: translate speach to text
+
+Text-to-speech.py: traslate text into speech
+
+main.py: conbine all three and makes the final code. Where speech in lenguage 1 is detected, translated in lenguage 2 and gived back to speaker 2 in lenguage 2
+
+images&video: folders to help comprehension
 <br>
 
 ## Evaluetion
