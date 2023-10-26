@@ -12,15 +12,31 @@ For translator:
 ```bash
 pip install translate
 ```
+For audio speach at lowd:
+```bash
+pip install pyttsx3
+```
 For speeach recognition: 
 to capture audio from the microphone and recognize speec. !!!Attebtion!!! need python version compatible with pyAudio
 ```bash
 pip install SpeechRecognition
 ```
-For audio speach at lowd:
+If you need some help for installing this library or when running the code it try to access pyaudio (that is difficult to istall) watch this video, install py audio and you will be fine:
+- [video](https://www.youtube.com/watch?v=ttyqCAVDINY)
+- [link](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio)
+
+Following this steps should be easy:
+1. open the link ([link](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio))
+2. install in the pyAudio verion for your python
+3. move the .whl file in your project folder
+4. run the following comand
+
 ```bash
-pip install pyttsx3
+pip install PyAudio-0.2.11-cp310-cp310-win_amd64.whl
 ```
+
+5. Pyaudio will be installe in your computer
+6. If needed help yourself with a Virtual Environment
 <br>
 
 ## Steps
