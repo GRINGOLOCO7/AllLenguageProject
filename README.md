@@ -16,7 +16,7 @@ For audio speach at lowd:
 ```bash
 pip install pyttsx3
 ```
-For speeach recognition: 
+For speeach recognition:
 to capture audio from the microphone and recognize speec. !!!Attebtion!!! need python version compatible with pyAudio
 ```bash
 pip install SpeechRecognition
@@ -41,6 +41,7 @@ pip install PyAudio-0.2.11-cp310-cp310-win_amd64.whl
 
 ## Steps
 
+0. Activate virtual environment (venv\Scripts\activate)
 1. select lenguage speaker 1 and 2
 2. speach - to - text: speaker 1 say something
 3. translate text: speaker 1 phrase is translated in speaker 2 lenguage
