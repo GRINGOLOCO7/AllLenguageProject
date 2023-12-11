@@ -26,7 +26,7 @@ def recognize(lenguadge):
 
 def text_to_speach(text):
     text_speech = pyttsx3.init()
-    text_speech.setProperty('rate', 75)  # Adjust this value as needed
+    text_speech.setProperty('rate', 150)  # Adjust this value as needed
     text_speech.say(text)
     text_speech.runAndWait()
 
