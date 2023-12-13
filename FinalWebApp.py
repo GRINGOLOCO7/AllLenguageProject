@@ -3,6 +3,8 @@ from translate import Translator
 import speech_recognition
 import pyttsx3
 
+# streamlit run Testing.py
+
 def recognize(language):
     recognizer = speech_recognition.Recognizer()
     try:
@@ -67,12 +69,11 @@ def main():
                 st.write("Translation:", st.session_state.translation)
                 text_to_speech(st.session_state.translation)
 
-    if st.session_state.speaker:
-        st.write(f"Current Speaker: Speaker {st.session_state.speaker}")
-
-    if st.session_state.speaker is not None and st.button("I'm done speaking"):
-        st.session_state.speaker = 2 if st.session_state.speaker == 1 else 1
-        st.session_state.translation = ""
+    # if st.session_state.speaker:
+    #     st.write(f"Current Speaker: Speaker {st.session_state.speaker}")
+    # if st.session_state.speaker is not None and st.button("I'm done speaking"):
+    #     st.session_state.speaker = 2 if st.session_state.speaker == 1 else 1
+    #     st.session_state.translation = ""
 
     if st.button("End Conversation"):
         st.session_state.speaker = None
