@@ -1,86 +1,90 @@
+from flask import Flask, request, render_template, jsonify
 from translate import Translator
-import speech_recognition
+import speech_recognition as sr
 import pyttsx3
 
-## return the detected frase in the given legudge
-def recognize(lenguadge):
-    recognizer = speech_recognition.Recognizer()                        # object that make sure it is understanding
+app = Flask(__name__)
+
+LanguageSpeaker1 = ""
+LanguageSpeaker2 = ""
+
+def recognize(language):
+    recognizer = sr.Recognizer()
     while True:
         try:
-            with speech_recognition.Microphone() as mic:
-                recognizer.adjust_for_ambient_noise(mic, duration=0.1)  # source = mic, duration
-                                                                        # recognize when we sart talking nd stop
-                audio = recognizer.listen(mic)                          # listen to the mic
-
-                text = recognizer.recognize_google(audio, None, lenguadge)               # CHECK MORE THE INPUT HERE
+            with sr.Microphone() as mic:
+                recognizer.adjust_for_ambient_noise(mic, duration=0.1)
+                audio = recognizer.listen(mic)
+                text = recognizer.recognize_google(audio, None, language)
                 text = text.lower()
-
                 print(f"\nRecognized:\n {text}")
                 return text
-        except speech_recognition.UnknownValueError:
+        except sr.UnknownValueError:
             print('No speech detected')
-            recognizer = speech_recognition.Recognizer()
+            recognizer = sr.Recognizer()
             continue
-        except speech_recognition.WaitTimeoutError:
+        except sr.WaitTimeoutError:
             print('Timeout, please speak again.')
 
-def text_to_speach(text):
+def text_to_speech(text):
     text_speech = pyttsx3.init()
-    text_speech.setProperty('rate', 150)  # Adjust this value as needed
+    text_speech.setProperty('rate', 150)
     text_speech.say(text)
     text_speech.runAndWait()
 
+@app.route('/')
+def index():
+    return render_template('index.html')
 
+@app.route('/update-languages', methods=['POST'])
+def update_languages():
+    global LanguageSpeaker1, LanguageSpeaker2
+    data = request.get_json()
+    LanguageSpeaker1 = data.get('language1', '')
+    LanguageSpeaker2 = data.get('language2', '')
+    audio_data = data.get('audioData', '')
 
+    # Perform translation and text-to-speech
+    result = translate_and_speak(audio_data)
 
+    return jsonify({"result": result})
 
+def translate_and_speak(text):
+    translator = Translator(to_lang=LanguageSpeaker2, from_lang=LanguageSpeaker1)
+    translated_text = translator.translate(text)
+    text_to_speech(translated_text)
+    return translated_text
 
+if __name__ == '__main__':
+    print("LANGUAGES ALLOW:\n\n"
+          "English: 'en'\nSpanish: 'es'\nFrench: 'fr'\n"
+          "German: 'de'\nItalian: 'it'\nJapanese: 'ja'\n"
+          "Chinese (Simplified): 'zh-CN'\nChinese (Traditional): 'zh-TW'\n"
+          "Russian: 'ru'\nArabic: 'ar'\nKorean: 'ko'\n\n")
 
+    LanguageSpeaker1 = input("WHAT LANGUAGE DOES SPEAKER 1 USE?\t")
+    LanguageSpeaker1 = LanguageSpeaker1[0:2].lower()
+    LanguageSpeaker2 = input("WHAT LANGUAGE DOES SPEAKER 2 USE?\t")
+    LanguageSpeaker2 = LanguageSpeaker2[0:2].lower()
 
+    Speaker = 1
 
+    while True:
+        if Speaker == 1:
+            print("Speaker 1, say your phrase\n")
+            source = recognize(LanguageSpeaker1)
+            result = translate_and_speak(source)
+            print(result)
 
+            Speaker += 1
+        else:
+            print("Speaker 2, say your phrase\n")
+            source = recognize(LanguageSpeaker2)
+            result = translate_and_speak(source)
+            print(result)
 
+            Speaker -= 1
 
-# initialize 2 people and the lenguages they will speak
-print("LANGUAGES ALLOW:\n\n"
-        "English: 'en'\nSpanish: 'es'\nFrench: 'fr'\n"
-      "German: 'de'\nItalian: 'it'\nJapanese: 'ja'\n"
-      "Chinese (Simplified): 'zh-CN'\nChinese (Traditional): 'zh-TW'\n"
-      "Russian: 'ru'\nArabic: 'ar'\nKorean: 'ko'\n\n")
-LanguageSpeaker1 = input("WHAT LANGUAGE DOES SPEAKER 1 USE?\t")
-LanguageSpeaker1 = LanguageSpeaker1[0:2].lower()
-LanguageSpeaker2 = input("WHAT LANGUAGE DOES SPEAKER 2 USE?\t")
-LanguageSpeaker2 = LanguageSpeaker2[0:2].lower()
-
-
-
-
-
-
-
-
-
-Speaker = 1
-
-while True:
-    if Speaker == 1:
-        print("Speaker 1 say your prhase\n")
-        source = recognize(LanguageSpeaker1)
-        translator = Translator(to_lang=LanguageSpeaker2 , from_lang=LanguageSpeaker1)
-        result = translator.translate(source)
-        print(result)
-        text_to_speach(result)
-
-        Speaker += 1
-    else:
-        print("Speaker 2 say your prhase\n")
-        source = recognize(LanguageSpeaker2)
-        translator = Translator(to_lang=LanguageSpeaker1, from_lang=LanguageSpeaker2)
-        result = translator.translate(source)
-        print(result)
-        text_to_speach(result)
-
-        Speaker -= 1
 
 
 
