@@ -1,0 +1,5 @@
+streamlit
+translate
+SpeechRecognition
+pyttsx3
+# pip install -r requirements.txt

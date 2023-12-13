@@ -32,56 +32,49 @@ def text_to_speach(text):
 
 
 
+def main():
+    '''
+    # initialize 2 people and the lenguages they will speak
+    print("LANGUAGES ALLOW:\n\n"
+            "English: 'en'\nSpanish: 'es'\nFrench: 'fr'\n"
+        "German: 'de'\nItalian: 'it'\nJapanese: 'ja'\n"
+        "Chinese (Simplified): 'zh-CN'\nChinese (Traditional): 'zh-TW'\n"
+        "Russian: 'ru'\nArabic: 'ar'\nKorean: 'ko'\n\n")
+    '''
+    LanguageSpeaker1 = input("WHAT LANGUAGE DOES SPEAKER 1 USE?\t")
+    LanguageSpeaker1 = LanguageSpeaker1[0:2].lower()
+    LanguageSpeaker2 = input("WHAT LANGUAGE DOES SPEAKER 2 USE?\t")
+    LanguageSpeaker2 = LanguageSpeaker2[0:2].lower()
 
 
 
+    Speaker = 1
+
+    while True:
+        if Speaker == 1:
+            print("Speaker 1 say your prhase\n")
+            source = recognize(LanguageSpeaker1)
+            if source == "stop":
+                break
+            translator = Translator(to_lang=LanguageSpeaker2 , from_lang=LanguageSpeaker1)
+            result = translator.translate(source)
+            print(result)
+            text_to_speach(result)
+
+            Speaker += 1
+        else:
+            print("Speaker 2 say your prhase\n")
+            source = recognize(LanguageSpeaker2)
+            if source == "stop":
+                break
+            translator = Translator(to_lang=LanguageSpeaker1, from_lang=LanguageSpeaker2)
+            result = translator.translate(source)
+            print(result)
+            text_to_speach(result)
+
+            Speaker -= 1
 
 
-
-
-
-
-# initialize 2 people and the lenguages they will speak
-print("LANGUAGES ALLOW:\n\n"
-        "English: 'en'\nSpanish: 'es'\nFrench: 'fr'\n"
-      "German: 'de'\nItalian: 'it'\nJapanese: 'ja'\n"
-      "Chinese (Simplified): 'zh-CN'\nChinese (Traditional): 'zh-TW'\n"
-      "Russian: 'ru'\nArabic: 'ar'\nKorean: 'ko'\n\n")
-LanguageSpeaker1 = input("WHAT LANGUAGE DOES SPEAKER 1 USE?\t")
-LanguageSpeaker1 = LanguageSpeaker1[0:2].lower()
-LanguageSpeaker2 = input("WHAT LANGUAGE DOES SPEAKER 2 USE?\t")
-LanguageSpeaker2 = LanguageSpeaker2[0:2].lower()
-
-
-
-
-
-
-
-
-
-Speaker = 1
-
-while True:
-    if Speaker == 1:
-        print("Speaker 1 say your prhase\n")
-        source = recognize(LanguageSpeaker1)
-        translator = Translator(to_lang=LanguageSpeaker2 , from_lang=LanguageSpeaker1)
-        result = translator.translate(source)
-        print(result)
-        text_to_speach(result)
-
-        Speaker += 1
-    else:
-        print("Speaker 2 say your prhase\n")
-        source = recognize(LanguageSpeaker2)
-        translator = Translator(to_lang=LanguageSpeaker1, from_lang=LanguageSpeaker2)
-        result = translator.translate(source)
-        print(result)
-        text_to_speach(result)
-
-        Speaker -= 1
-
-
-
+if __name__ == '__main__':
+    main()
 ###### ask chat if I can use a .net code for web grphic interface
