@@ -3,7 +3,7 @@ from translate import Translator
 import speech_recognition
 import pyttsx3
 
-# streamlit run Testing.py
+# streamlit run FinalWebApp.py
 
 def recognize(language):
     recognizer = speech_recognition.Recognizer()
