@@ -36,7 +36,6 @@
                 <!-- Dropdown for Speaker 2 Language -->
                 <label for="language2">Speaker 2 Language:</label>
                 <select id="language2" name="language2" required>
-                    <!-- Language options go here -->
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
                     <option value="fr">French</option>
@@ -50,38 +49,23 @@
                     <option value="ko">Korean</option>
                 </select>
 
-                <!-- Start Recording button -->
-                <button type="button" onclick="startRecording()">Start Recording</button>
-
-                <!-- Stop Recording button -->
-                <button type="button" onclick="stopRecording()">Stop Recording</button>
-
-                <!-- Result display -->
-                <div id="result"></div>
+                <!-- Start Conversation button -->
+                <button type="button" onclick="startConversation()">Start Conversation</button>
 
                 <!-- Display the translated text -->
                 <div id="translatedText"></div>
-
-                <!-- Submit button -->
-                <input type="submit" value="Start Conversation">
             </form>
         </section>
-
-        <!-- Add your conversation input fields here -->
+        
+        <!-- Speaker buttons -->
         <section>
-            <h2>Conversation</h2>
-            <p>Enter the phrases spoken by Speaker 1 and Speaker 2:</p>
-            <form>
-                <!-- Input fields for conversation -->
-                <label for="speaker1">Speaker 1:</label>
-                <input type="text" id="speaker1" name="speaker1" required>
+            <h2>Recording</h2>
+            <p>Click the buttons to start/stop recording for Speaker 1 or Speaker 2:</p>
+            <button onclick="startRecording(1)">Speaker 1</button>
+            <button onclick="startRecording(2)">Speaker 2</button>
 
-                <label for="speaker2">Speaker 2:</label>
-                <input type="text" id="speaker2" name="speaker2" required>
-
-                <!-- Submit button -->
-                <input type="submit" value="Translate and Speak">
-            </form>
+            <!-- Result display -->
+            <div id="result"></div>
         </section>
     </main>
 
@@ -92,96 +76,62 @@
     <script>
         let recognition;
         let isRecording = false;
-    
-        function startRecording() {
+
+        function startRecording(speaker) {
             recognition = new webkitSpeechRecognition();
             recognition.continuous = true;
             recognition.interimResults = true;
-    
-            recognition.onstart = function() {
+
+            recognition.onstart = function () {
                 console.log("Recording started");
             };
-    
-            recognition.onresult = function(event) {
+
+            recognition.onresult = function (event) {
                 let result = "";
                 for (let i = event.resultIndex; i < event.results.length; ++i) {
                     result += event.results[i][0].transcript;
                 }
                 document.getElementById("result").innerText = result;
             };
-    
-            recognition.onend = function() {
+
+            recognition.onend = function () {
                 console.log("Recording ended");
                 isRecording = false;
+
+                // Get the selected language codes from the dropdown menus
+                var language1 = document.getElementById("language1").value;
+                var language2 = document.getElementById("language2").value;
+
+                // Get the recorded audio data
+                var audioData = document.getElementById("result").innerText;
+
+                // Update the language variables in the server-side code
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/update-languages", true);
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+                // Send the selected languages, audio data, and speaker info to the server (backend)
+                xhr.send(JSON.stringify({ language1: language1, language2: language2, audioData: audioData, speaker: speaker }));
+
+                // Handle the response from the server
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // Display the translated text on the website
+                        var translatedText = JSON.parse(xhr.responseText).result;
+                        document.getElementById("translatedText").innerText = "Speaker " + speaker + " said: " + translatedText;
+                    }
+                };
             };
-    
+
             recognition.start();
             isRecording = true;
         }
-    
-        function stopRecording() {
-            recognition.stop();
-            isRecording = false;
-        }
-    
-        function startConversation() {
-            // Get the selected language codes from the dropdown menus
-            var language1 = document.getElementById("language1").value;
-            var language2 = document.getElementById("language2").value;
-    
-            // Get the recorded audio data
-            var audioData = document.getElementById("result").innerText;
-    
-            // Update the language variables in the server-side code
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/update-languages", true);
-            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    
-            // Send the selected languages and audio data to the server (backend)
-            xhr.send(JSON.stringify({ language1: language1, language2: language2, audioData: audioData }));
-    
-            // Handle the response from the server
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    // Display the translated text on the website
-                    var translatedText = JSON.parse(xhr.responseText).result;
-                    document.getElementById("translatedText").innerText = "Translated Text: " + translatedText;
-                }
-            };
-    
-            // Prevent the default form submission
-            event.preventDefault();
-        }
 
         function startConversation() {
-            // Get the selected language codes from the dropdown menus
-            var language1 = document.getElementById("language1").value;
-            var language2 = document.getElementById("language2").value;
-
-            // Get the recorded audio data
-            var audioData = document.getElementById("result").innerText;
-
-            // Update the language variables in the server-side code
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/update-languages", true);
-            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
-            // Send the selected languages and audio data to the server (backend)
-            xhr.send(JSON.stringify({ language1: language1, language2: language2, audioData: audioData }));
-
-            // Handle the response from the server
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    // Display the translated text on the website
-                    var translatedText = JSON.parse(xhr.responseText).result;
-                    document.getElementById("translatedText").innerText = "Translated Text: " + translatedText;
-                }
-            };
-
-            // Prevent the default form submission
-            event.preventDefault();
+            // Additional logic for starting a conversation if needed
         }
     </script>
 </body>
 </html>
+
 
