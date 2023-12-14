@@ -30,7 +30,6 @@ pyarrow==14.0.1
 PyAudio @ file:///C:/Users/orlan/OneDrive/Desktop/1semestre/AllLenguadge_Project_Technology/SumUp/PyAudio-0.2.11-cp310-cp310-win_amd64.whl#sha256=50c5bd3401bc33b9f58a7c8005841575354a8b4d3293e68ccc4db59d31f18f9a
 pydeck==0.8.1b0
 Pygments==2.17.2
-pypiwin32==223
 python-dateutil==2.8.2
 pyttsx3==2.90
 pytz==2023.3.post1
