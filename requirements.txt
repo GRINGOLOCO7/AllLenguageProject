@@ -43,11 +43,9 @@ pyee==11.1.0
 Pygments==2.17.2
 pylibsrtp==0.9.1
 pyOpenSSL==23.3.0
-pypiwin32
 python-dateutil==2.8.2
 pyttsx3==2.90
 pytz==2023.3.post1
-pywin32
 referencing==0.32.0
 requests==2.31.0
 rich==13.7.0
