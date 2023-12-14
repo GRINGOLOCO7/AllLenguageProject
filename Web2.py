@@ -12,7 +12,7 @@ def recognize(language):
                 audio = recognizer.listen(mic)
                 text = recognizer.recognize_google(audio, None, language)
                 text = text.lower()
-                print(f"\nRecognized:\n {text}")
+                print(f"\n\nRecognized:\n {text}")
                 return text
         except speech_recognition.UnknownValueError:
             print('No speech detected')

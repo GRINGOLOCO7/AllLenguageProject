@@ -13,7 +13,7 @@ venv_python_path = sys.executable
 st.title('Parla - WeSpeack')
 
 # Allow users to select languages
-st.write("LANGUAGES ALLOW:\n\n"
+st.write("LANGUAGES ALLOW:\n\n\n"
             "English: 'en'\nSpanish: 'es'\nFrench: 'fr'\n"
         "German: 'de'\nItalian: 'it'\nJapanese: 'ja'\n"
         "Chinese (Simplified): 'zh-CN'\nChinese (Traditional): 'zh-TW'\n"
